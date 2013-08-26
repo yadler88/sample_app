@@ -37,9 +37,27 @@ describe "MicropostPages" do
 		describe "as correct user" do
 			before { visit root_path }
 
-			it "should delete a micropost" do
-				expect { click_link "delete" }.to change(Micropost, :count).by(-1)
+			describe "with valid remember_token" do
+
+				it "should delete a micropost" do
+					expect { click_link "delete" }.to change(Micropost, :count).by(-1)
+				end
 			end
-		end
+
+			describe "with expired remember_token" do
+				before do
+					sign_out
+					click_link "delete"
+					fill_in "Email",	with: user.email
+					fill_in "Password", with: user.password
+					click_button "Sign in"
+				end
+
+				it "should render the user page" do
+
+					expect(page).to have_title(full_title(''))
+				end
+			end
+		end		
 	end
 end

@@ -1,5 +1,6 @@
 class MicropostsController < ApplicationController
 	before_action :signed_in_user
+	#before_action :admin_user, only: :destroy
 	before_action :correct_user, only: :destroy
 
 	def create
@@ -15,7 +16,7 @@ class MicropostsController < ApplicationController
 
 	def destroy
 		@micropost.destroy
-		redirect_to :back || root_url
+		redirect_to :back
 	end
 
 
